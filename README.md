@@ -4,7 +4,9 @@ Uses the TikTok API to download videos without the watermark.
 ## Using
 
 ### Hosted Version
-https://tikdown.herokuapp.com/
+https://tikdown.xyz/
+or
+https://tiktok-downloader-ebon.vercel.app/
 
 ### Locally Hosted
 
