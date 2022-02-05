@@ -3,7 +3,7 @@ Uses the TikTok API to download videos without the watermark.
 
 ## Using
 
-## Hosted Version
+### Hosted Version
 https://tikdown.herokuapp.com/
 
 ### Locally Hosted
