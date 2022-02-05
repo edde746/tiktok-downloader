@@ -18,7 +18,7 @@ export const post = async ({ request }) => {
     return share.headers.get("location").match(/([0-9])\w+/)[0];
   })();
 
-  if (!id) return { status: 500, body: { error: "Could not find video ID" } }; 
+  if (!id) return { status: 500, body: { error: "Could not find video ID" } };
 
   // Get video information
   let tiktok = await fetch(`http://api2.musical.ly/aweme/v1/aweme/detail/?aweme_id=${id}`).then((res) => res.json());
@@ -29,8 +29,8 @@ export const post = async ({ request }) => {
   return {
     body: {
       video: {
+        id: id, //tiktok.video.play_addr.url_list[0],
         cover: tiktok.video.ai_dynamic_cover.url_list[0],
-        file: tiktok.video.play_addr.url_list[0],
         posted: tiktok.create_time,
         author: {
           name: tiktok.author.unique_id,

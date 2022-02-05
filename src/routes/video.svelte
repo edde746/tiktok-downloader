@@ -32,7 +32,7 @@
         <h3 class="text-lg font-semibold">Created</h3>
         <p>{new Date(video.posted * 1000).toDateString()}</p>
       </div>
-      <a href={video.file} download class="btn bg-sky-100 text-sky-700 hover:bg-sky-200 text-center">Download</a>
+      <a href={`/download?id=${video.id}`} download class="btn bg-sky-100 text-sky-700 hover:bg-sky-200 text-center">Download</a>
     </div>
   </div>
 {/if}
