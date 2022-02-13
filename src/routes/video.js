@@ -1,3 +1,5 @@
+import { getClient } from "$lib/redis";
+
 export const post = async ({ request }) => {
   const body = await request.formData();
 
@@ -20,8 +22,20 @@ export const post = async ({ request }) => {
 
   if (!id) return { status: 500, body: { error: "Could not find video ID" } };
 
+  const client = await getClient();
   // Get video information
-  let tiktok = await fetch(`http://api2.musical.ly/aweme/v1/aweme/detail/?aweme_id=${id}`).then((res) => res.json());
+  let tiktok = await fetch(`http://api2.musical.ly/aweme/v1/aweme/detail/?aweme_id=${id}`, {
+    headers: { Cookie: (await client.get("cookies")) || "" },
+  }).then(async (res) => {
+    const newCookies = res.headers.get("set-cookie");
+    if (newCookies) await client.set("cookies", newCookies);
+    return res.json();
+  });
+
+  await client.set(id.toString(), tiktok?.aweme_detail?.video?.play_addr?.url_list[0]);
+  await client.expire(id.toString(), 60 * 60);
+  await client.disconnect();
+
   if (!tiktok?.aweme_detail?.video) return { status: 400, body: { error: "Could not fetch details" } };
   else tiktok = tiktok.aweme_detail;
 

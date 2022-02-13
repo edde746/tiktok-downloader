@@ -1,16 +1,15 @@
+import { getClient } from "$lib/redis";
 import { randomBytes } from "crypto";
 
 // Proxy the file
 export const get = async ({ url }) => {
   // Get video information
-  const tiktok = await fetch(
-    `http://api2.musical.ly/aweme/v1/aweme/detail/?aweme_id=${url.searchParams.get("id")}`
-  ).then((res) => res.json());
+  const client = await getClient();
+  const fileUrl = await client.get(url.searchParams.get("id").toString());
+  await client.disconnect();
+  if (!fileUrl) return { status: 500, body: "Something went wrong" };
 
-  // Get video
-  const downloadUrl = tiktok?.aweme_detail?.video?.play_addr?.url_list[0];
-  const video = await fetch(downloadUrl).then((res) => res.arrayBuffer());
-
+  const video = await fetch(fileUrl).then((res) => res.arrayBuffer());
   return {
     body: new Uint8Array(video),
     headers: {
