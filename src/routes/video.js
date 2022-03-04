@@ -5,7 +5,7 @@ export const post = async ({ request }) => {
 
   // Validate URL
   if (!body.has("url") || !body.get("url").length) return { status: 400, body: { error: "No video provided" } };
-  if (!["vm.tiktok.com", "tiktok.com"].includes(new URL(body.get("url")).hostname))
+  if (!["vm.tiktok.com", "tiktok.com", "www.tiktok.com"].includes(new URL(body.get("url")).hostname))
     return { status: 400, body: { error: "Forbidden domain" } };
 
   const id = await (async () => {
